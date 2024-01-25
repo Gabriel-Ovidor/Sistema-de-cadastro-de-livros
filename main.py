@@ -1,93 +1,74 @@
 import json
+from colorama import Fore, Style, init
+
+# Inicialize o colorama
+init()
 
 livros = []
 
 def cadastrar_livro():
-    print("\n=== Cadastrar Livro ===")
     titulo = input("Digite o título do livro: ")
     autor = input("Digite o nome do autor: ")
     ano = input("Digite o ano da publicação: ")
     editora = input("Digite o nome da editora: ")
     genero = input("Digite o gênero do livro: ")
     paginas = input("Digite a quantidade de páginas do livro: ")
-    preço = input("Digite o valor do livro: ")
+    preco = input("Digite o valor do livro: ")
     isbn = input("Digite o ISBN do livro: ")
-    
-    livro = {"Título": titulo, "Autor": autor, "Ano": ano, "Editora": editora, "Gênero": genero, "Páginas": paginas, "Preço": preço, "ISBN": isbn}
+
+    livro = {"Título": titulo, "Autor": autor, "Ano": ano, "Editora": editora, "Gênero": genero, "Páginas": paginas, "Preço": preco, "ISBN": isbn}
     livros.append(livro)
-    print('Cadastro efetuado!')
+    print(Fore.GREEN + 'Cadastro efetuado!' + Style.RESET_ALL)
 
 def listar_livros():
-    print("\n=== Listar Livros ===")
     if not livros:
-        print("\033[91mNenhum livro encontrado.\033[0m")
+        print(Fore.YELLOW + "Nenhum livro encontrado." + Style.RESET_ALL)
     else:
         for index, livro in enumerate(livros, start=1):
-            print(f'\033[92m{index}. \033[0m{"="*30}')
-            print(f'\033[1mTítulo:\033[0m {livro["Título"]}')
-            print(f'\033[1mAutor:\033[0m {livro["Autor"]}')
-            print(f'\033[1mAno:\033[0m {livro["Ano"]}')
-            print(f'\033[1mEditora:\033[0m {livro["Editora"]}')
-            print(f'\033[1mGênero:\033[0m {livro["Gênero"]}')
-            print(f'\033[1mPáginas:\033[0m {livro["Páginas"]}')
-            print(f'\033[1mPreço:\033[0m {livro["Preço"]}')
-            print(f'\033[1mISBN:\033[0m {livro["ISBN"]}')
-            print()
+            print(f"{index}. Título: {livro['Título']}, Autor: {livro['Autor']}, Ano: {livro['Ano']}, Editora: {livro['Editora']}, Gênero: {livro['Gênero']}, Páginas: {livro['Páginas']}, Preço: {livro['Preço']}, ISBN: {livro['ISBN']}")
 
 def editar_livro():
-    print("\n=== Editar Livro ===")
     listar_livros()
     indice = int(input('Digite o número do livro que deseja editar: ')) - 1
-    
+
     if 0 <= indice < len(livros):
-        novo_titulo = input(f'Novo título ({livros[indice]["Título"]}): ') or livros[indice]["Título"]
-        novo_autor = input(f'Novo autor ({livros[indice]["Autor"]}): ') or livros[indice]["Autor"]
-        novo_ano = input(f'Novo ano ({livros[indice]["Ano"]}): ') or livros[indice]["Ano"]
-        nova_editora = input(f'Nova editora ({livros[indice]["Editora"]}): ') or livros[indice]["Editora"]
-        novo_genero = input(f'Novo gênero ({livros[indice]["Gênero"]}): ') or livros[indice]["Gênero"]
-        nova_pagina = input(f'Nova página ({livros[indice]["Páginas"]}): ') or livros[indice]["Páginas"]
-        novo_preço = input(f'Novo preço ({livros[indice]["Preço"]}): ') or livros[indice]["Preço"]
-        novo_isbn = input(f'Novo ISBN ({livros[indice]["ISBN"]}): ') or livros[indice]["ISBN"]
-        
-        livros[indice] = {
-            "Título": novo_titulo,
-            "Autor": novo_autor,
-            "Ano": novo_ano,
-            "Editora": nova_editora,
-            "Gênero": novo_genero,
-            "Páginas": nova_pagina,
-            "Preço": novo_preço,
-            "ISBN": novo_isbn
-        }
-        print('Livro editado com sucesso!')
+        novo_titulo = input('Novo título (ou ENTER para manter o mesmo): ')
+        novo_autor = input('Novo autor (ou ENTER para manter o mesmo): ')
+        novo_ano = input('Novo ano (ou ENTER para manter o mesmo): ')
+        nova_editora = input('Nova editora (ou ENTER para manter o mesmo): ')
+        novo_genero = input('Novo gênero (ou ENTER para manter o mesmo): ')
+        nova_pagina = input('Nova página (ou ENTER para manter o mesmo): ')
+        novo_preco = input('Novo preço (ou ENTER para manter o mesmo): ')
+        novo_isbn = input('Novo ISBN (ou ENTER para manter mesmo): ')
+
+        print(Fore.GREEN + 'Livro editado com sucesso!' + Style.RESET_ALL)
     else:
-        print('O livro não foi encontrado.')
+        print(Fore.RED + 'O livro não foi encontrado.' + Style.RESET_ALL)
 
 def excluir_livro():
-    print("\n=== Excluir Livro ===")
     listar_livros()
     indice = int(input('Digite o número do livro que deseja excluir: ')) - 1
-    
+
     if 0 <= indice < len(livros):
         livro_excluido = livros.pop(indice)
-        print(f'O livro "{livro_excluido["Título"]}" foi excluído de sua base!')
+        print(f'O livro "{livro_excluido["Titulo"]}" foi excluído de sua base!' + Fore.RED)
     else:
-        print('Livro não encontrado.')
+        print(Fore.RED + 'Livro não encontrado.' + Style.RESET_ALL)
 
 def salvar_em_arquivo():
-    print("\n=== Salvar em Arquivo ===")
     with open('livros.json', 'w') as arquivo:
         json.dump(livros, arquivo)
-    print('Dados salvos em "livros.json')
+    print(Fore.GREEN + 'Dados salvos em "livros.json' + Style.RESET_ALL)
 
 def carregar_de_arquivo():
-    print("\n=== Carregar de Arquivo ===")
     try:
         with open('livros.json', 'r') as arquivo:
             livros.extend(json.load(arquivo))
-        print('Dados carregados de "livros.json".')
+        print(Fore.GREEN + 'Dados carregados de "livros.json".' + Style.RESET_ALL)
     except FileNotFoundError:
-        print('Arquivo "livros.json" não encontrado.')
+        print(Fore.RED + 'Arquivo "livros.json" não encontrado.' + Style.RESET_ALL)
+
+carregar_de_arquivo()
 
 while True:
     print("\nEscolha uma opção:")
@@ -114,9 +95,11 @@ while True:
     elif escolha == "6":
         carregar_de_arquivo()
     elif escolha == "7":
-        print("Saindo do programa. Até mais!")
+        print(Fore.CYAN + "Saindo do programa. Até mais!" + Style.RESET_ALL)
         break
     else:
-        print("Opção inválida. Tente novamente.")
+        print(Fore.RED + "Opção inválida. Tente novamente." + Style.RESET_ALL)
+
+
 
         
