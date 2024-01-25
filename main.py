@@ -7,6 +7,10 @@ init()
 livros = []
 
 def cadastrar_livro():
+    print("\n" + "=" * 40)
+    print(Fore.CYAN + f"{'SISTEMA DE CADASTRO DE LIVROS':^40}" + Style.RESET_ALL)
+    print("=" * 40)
+    print(Fore.YELLOW + "CADASTRO DE LIVRO" + Style.RESET_ALL)
     titulo = input("Digite o título do livro: ")
     autor = input("Digite o nome do autor: ")
     ano = input("Digite o ano da publicação: ")
@@ -24,22 +28,35 @@ def listar_livros():
     if not livros:
         print(Fore.YELLOW + "Nenhum livro encontrado." + Style.RESET_ALL)
     else:
+        print("\n" + "=" * 60)
+        print(Fore.CYAN + f"{'SISTEMA DE CADASTRO DE LIVROS':^60}" + Style.RESET_ALL)
+        print("=" * 60)
+        print(Fore.YELLOW + "LISTA DE LIVROS" + Style.RESET_ALL)
+        print(f"{'Nº': <5}{'Título': <20}{'Autor': <20}{'Ano': <5}{'Editora': <15}{'Gênero': <15}{'Páginas': <8}{'Preço': <10}{'ISBN': <15}")
+        print("-" * 60)
+
         for index, livro in enumerate(livros, start=1):
-            print(f"{index}. Título: {livro['Título']}, Autor: {livro['Autor']}, Ano: {livro['Ano']}, Editora: {livro['Editora']}, Gênero: {livro['Gênero']}, Páginas: {livro['Páginas']}, Preço: {livro['Preço']}, ISBN: {livro['ISBN']}")
+            print(f"{index: <5}{livro['Título'][:20]: <20}{livro['Autor'][:20]: <20}{livro['Ano'][:5]: <5}{livro['Editora'][:15]: <15}{livro['Gênero'][:15]: <15}{livro['Páginas'][:8]: <8}{livro['Preço'][:10]: <10}{livro['ISBN'][:15]: <15}")
+
+        print("-" * 60)
 
 def editar_livro():
     listar_livros()
     indice = int(input('Digite o número do livro que deseja editar: ')) - 1
 
     if 0 <= indice < len(livros):
-        novo_titulo = input('Novo título (ou ENTER para manter o mesmo): ')
-        novo_autor = input('Novo autor (ou ENTER para manter o mesmo): ')
-        novo_ano = input('Novo ano (ou ENTER para manter o mesmo): ')
-        nova_editora = input('Nova editora (ou ENTER para manter o mesmo): ')
-        novo_genero = input('Novo gênero (ou ENTER para manter o mesmo): ')
-        nova_pagina = input('Nova página (ou ENTER para manter o mesmo): ')
-        novo_preco = input('Novo preço (ou ENTER para manter o mesmo): ')
-        novo_isbn = input('Novo ISBN (ou ENTER para manter mesmo): ')
+        print("\n" + "=" * 40)
+        print(Fore.CYAN + f"{'SISTEMA DE CADASTRO DE LIVROS':^40}" + Style.RESET_ALL)
+        print("=" * 40)
+        print(Fore.YELLOW + "EDITAR LIVRO" + Style.RESET_ALL)
+        novo_titulo = input(f'{"Novo título": <30} (ou ENTER para manter o mesmo): ')
+        novo_autor = input(f'{"Novo autor": <30} (ou ENTER para manter o mesmo): ')
+        novo_ano = input(f'{"Novo ano": <30} (ou ENTER para manter o mesmo): ')
+        nova_editora = input(f'{"Nova editora": <30} (ou ENTER para manter o mesmo): ')
+        novo_genero = input(f'{"Novo gênero": <30} (ou ENTER para manter o mesmo): ')
+        nova_pagina = input(f'{"Nova página": <30} (ou ENTER para manter o mesmo): ')
+        novo_preco = input(f'{"Novo preço": <30} (ou ENTER para manter o mesmo): ')
+        novo_isbn = input(f'{"Novo ISBN": <30} (ou ENTER para manter mesmo): ')
 
         print(Fore.GREEN + 'Livro editado com sucesso!' + Style.RESET_ALL)
     else:
@@ -51,22 +68,22 @@ def excluir_livro():
 
     if 0 <= indice < len(livros):
         livro_excluido = livros.pop(indice)
-        print(f'O livro "{livro_excluido["Titulo"]}" foi excluído de sua base!' + Fore.RED)
+        print(Fore.RED + f'O livro "{livro_excluido["Titulo"]}" foi excluído de sua base!' + Style.RESET_ALL)
     else:
         print(Fore.RED + 'Livro não encontrado.' + Style.RESET_ALL)
 
 def salvar_em_arquivo():
     with open('livros.json', 'w') as arquivo:
         json.dump(livros, arquivo)
-    print(Fore.GREEN + 'Dados salvos em "livros.json' + Style.RESET_ALL)
+    print(Fore.GREEN + 'Dados salvos em livros.json' + Style.RESET_ALL)
 
 def carregar_de_arquivo():
     try:
         with open('livros.json', 'r') as arquivo:
             livros.extend(json.load(arquivo))
-        print(Fore.GREEN + 'Dados carregados de "livros.json".' + Style.RESET_ALL)
+        print(Fore.GREEN + 'Dados carregados de livros.json.' + Style.RESET_ALL)
     except FileNotFoundError:
-        print(Fore.RED + 'Arquivo "livros.json" não encontrado.' + Style.RESET_ALL)
+        print(Fore.RED + 'Arquivo livros.json não encontrado.' + Style.RESET_ALL)
 
 carregar_de_arquivo()
 
@@ -99,6 +116,8 @@ while True:
         break
     else:
         print(Fore.RED + "Opção inválida. Tente novamente." + Style.RESET_ALL)
+
+
 
 
 
